@@ -10,6 +10,7 @@ import AddPlacePopup from './AddPlacePopup';
 import api from '../utils/Api';
 import { defaultCurrentUser, CurrentUserContext } from '../contexts/CurrentUserContext';
 import { Route, Switch } from 'react-router-dom';
+import Register from './Register'
 
 
 
@@ -134,6 +135,11 @@ function App() {
             <Header />
 
             <Switch>
+                <Route path="/sing-up">
+                    <Register/>
+                </Route>
+
+
                 <Route path="/">
                     <Main
                         onCardClick={onCardClick}
