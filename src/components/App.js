@@ -9,6 +9,7 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import api from '../utils/Api';
 import { defaultCurrentUser, CurrentUserContext } from '../contexts/CurrentUserContext';
+import { Route, Switch } from 'react-router-dom';
 
 
 
@@ -128,23 +129,31 @@ function App() {
 
     return (
 
+
         <CurrentUserContext.Provider value={currentUser}>
             <Header />
-            <Main
-                onCardClick={onCardClick}
-                onEditAvatar={handleEditAvatarClick}
-                onEditProfile={handleEditProfileClick}
-                onAddPlace={handleAddPlaceClick}
-                onCardLike={handleCardLike}
-                onCardDelete={handleCardDelete}
-                cards={cards}
-            />
+
+            <Switch>
+                <Route path="/">
+                    <Main
+                        onCardClick={onCardClick}
+                        onEditAvatar={handleEditAvatarClick}
+                        onEditProfile={handleEditProfileClick}
+                        onAddPlace={handleAddPlaceClick}
+                        onCardLike={handleCardLike}
+                        onCardDelete={handleCardDelete}
+                        cards={cards}
+                    />
+                </Route>
+            </Switch>
+
             <EditProfilePopup
 
                 isOpen={isEditProfilePopupOpen}
                 onClose={closeAllPopups}
                 onUpdateUser={handleUpdateUser}
             />
+
 
             <AddPlacePopup
 
@@ -153,6 +162,7 @@ function App() {
                 onAddPlace={handleAddPlaceSubmit}
 
             />
+
 
             <ImagePopup
                 card={selectedCard}
@@ -163,6 +173,7 @@ function App() {
                 }}
             />
 
+
             <PopupWithForm
                 name="delete"
                 title="Вы уверены?"
@@ -170,13 +181,13 @@ function App() {
             />
 
             <EditAvatarPopup
-
                 isOpen={isEditAvatarPopupOpen}
                 onClose={closeAllPopups}
                 onUpdateAvatar={handleUpdateAvatar}
-
             />
+
             <Footer />
+
         </CurrentUserContext.Provider>
 
     );
