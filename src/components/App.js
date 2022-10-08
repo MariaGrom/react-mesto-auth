@@ -10,7 +10,8 @@ import AddPlacePopup from './AddPlacePopup';
 import api from '../utils/Api';
 import { defaultCurrentUser, CurrentUserContext } from '../contexts/CurrentUserContext';
 import { Route, Switch } from 'react-router-dom';
-import Register from './Register'
+import Register from './Register';
+import Login from './Login';
 
 
 
@@ -136,9 +137,17 @@ function App() {
 
             <Switch>
                 <Route path="/sing-up">
-                    <Register/>
+                    <Register
+                    title="Регистрация"
+                    textSubmit="Зарегистрироваться"
+                    />
                 </Route>
-
+                <Route path="/sing-in">
+                    <Login
+                    title="Вход"
+                    textSubmit="Войти"
+                    />
+                </Route>
 
                 <Route path="/">
                     <Main
