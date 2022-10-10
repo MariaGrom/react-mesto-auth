@@ -26,7 +26,7 @@ function Register(props) {
       </fieldset>
       <button type="submit" className="form__submit-button">{textSubmit}</button>
       <p className="form__subtitle"> Уже зарегистрированы?</p>
-      <Link to="/sing-in" className="form__link">Войти</Link>
+      <Link to="/sign-in" className="form__link">Войти</Link>
     </form>
 
   )

@@ -12,12 +12,12 @@ import { defaultCurrentUser, CurrentUserContext } from '../contexts/CurrentUserC
 import { Route, Switch } from 'react-router-dom';
 import Register from './Register';
 import Login from './Login';
-
-
+import InfoTooltip from './InfoTooltip';
+import ProtectedRoute from './ProtectedRoute';
 
 function App() {
 
-    // Переменные состояния попапов
+    // Переменные состояния попапов главной страницы
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
@@ -26,6 +26,10 @@ function App() {
     const [isOpenPopupName, setIsOpenPopupName] = React.useState(false);
     // Переменная состояния карточек
     const [cards, setCards] = React.useState([]);
+    // Переменная состояния попапа страницы регистрации
+    const [isSignUp, setIsSignUp] = React.useState(false);
+    // Переменная состояния зарегистрированного пользователя
+    const [loggedIn, setLoggedIn] = React.useState(false);
 
 
     // Переменная состояния пользователя
@@ -133,23 +137,25 @@ function App() {
 
 
         <CurrentUserContext.Provider value={currentUser}>
+
             <Header />
 
             <Switch>
-                <Route path="/sing-up">
+                <Route path="/sign-up">
                     <Register
-                    title="Регистрация"
-                    textSubmit="Зарегистрироваться"
+                        title="Регистрация"
+                        textSubmit="Зарегистрироваться"
                     />
                 </Route>
-                <Route path="/sing-in">
+                <Route path="/sign-in">
                     <Login
-                    title="Вход"
-                    textSubmit="Войти"
+                        title="Вход"
+                        textSubmit="Войти"
                     />
                 </Route>
 
-                <Route path="/">
+                <ProtectedRoute path="/" loggedIn={loggedIn}>
+
                     <Main
                         onCardClick={onCardClick}
                         onEditAvatar={handleEditAvatarClick}
@@ -159,11 +165,11 @@ function App() {
                         onCardDelete={handleCardDelete}
                         cards={cards}
                     />
-                </Route>
+
+                </ProtectedRoute>
             </Switch>
 
             <EditProfilePopup
-
                 isOpen={isEditProfilePopupOpen}
                 onClose={closeAllPopups}
                 onUpdateUser={handleUpdateUser}
@@ -171,11 +177,9 @@ function App() {
 
 
             <AddPlacePopup
-
                 isOpen={isAddPlacePopupOpen}
                 onClose={closeAllPopups}
                 onAddPlace={handleAddPlaceSubmit}
-
             />
 
 
@@ -188,7 +192,6 @@ function App() {
                 }}
             />
 
-
             <PopupWithForm
                 name="delete"
                 title="Вы уверены?"
@@ -200,6 +203,12 @@ function App() {
                 onClose={closeAllPopups}
                 onUpdateAvatar={handleUpdateAvatar}
             />
+{/* 
+            <InfoTooltip
+                name="tooltip"
+                isOpen={isSignUp}
+                onClose={closeAllPopups}
+            /> */}
 
             <Footer />
 
