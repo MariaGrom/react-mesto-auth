@@ -1,32 +1,54 @@
 import React from 'react';
 
-function Login(props) {
+const Login = ({onLogin}) => {
 
-  const { title, textSubmit } = props
+  const [state, setState] = React.useState ({
+    email: '',
+    password: ''
+  })
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setState({
+      ...state,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onLogin(state)
+  }
+
 
   return (
-    <form className="form">
-      <div>
-        <h1 className="form__title">{title}</h1>
-        <fieldset className="form__fields">
-          <label className="email">
-            <input
-              type='url'
-              placeholder='Email'
-              className="form__input form__text"
-              required />
-          </label>
-          <label className="password">
-            <input
-              type='text'
-              placeholder='Пароль'
-              className="form__input form__text"
-              minLength="2" maxLength="40"
-              required />
-          </label>
-        </fieldset>
-      </div>
-      <button type="submit" className="form__submit-button">{textSubmit}</button>
+    <form onSubmit={handleSubmit} className="form">
+      <h1 className="form__title">Вход</h1>
+      <fieldset className="form__fields">
+        <label className="email">
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="Email"
+            className="form__input form__text"
+            value={state.email}
+            onChange={handleChange}
+          />
+        </label>
+        <label className="password">
+          <input
+            id="password"
+            type="password"
+            name="password"
+            placeholder='Пароль'
+            className="form__input form__text"
+            value={state.password}
+            onChange={handleChange}
+          />
+        </label>
+      </fieldset>
+      <button type="submit" className="form__submit-button">Войти</button>
     </form>
   )
 

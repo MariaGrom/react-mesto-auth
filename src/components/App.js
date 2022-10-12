@@ -9,13 +9,16 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import api from '../utils/Api';
 import { defaultCurrentUser, CurrentUserContext } from '../contexts/CurrentUserContext';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import Register from './Register';
 import Login from './Login';
 import InfoTooltip from './InfoTooltip';
 import ProtectedRoute from './ProtectedRoute';
+import * as apiAuth from '../utils/apiAuth';
 
 function App() {
+
+    const history = useHistory();
 
     // Переменные состояния попапов главной страницы
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
@@ -132,6 +135,23 @@ function App() {
 
     }
 
+    // Функция регистрация пользователя 
+    function handleRegistration(password, email) {
+       // apiAuth.register(password, email) //раскомментировать, когда заработает ЯПрактикум
+        Promise.resolve() //Удалить, когда заработает ЯПрактикум
+            .then(() => {
+                history.push('/signin')
+            })
+    }
+
+
+    //Функция логина пользователя
+    // function handleLogIn (password, email) {
+    //.then (() => {
+    // history.push('/')
+    //})
+    //
+    //}
 
     return (
 
@@ -143,8 +163,7 @@ function App() {
             <Switch>
                 <Route path="/sign-up">
                     <Register
-                        title="Регистрация"
-                        textSubmit="Зарегистрироваться"
+                        onRegister={handleRegistration}
                     />
                 </Route>
                 <Route path="/sign-in">
@@ -203,7 +222,7 @@ function App() {
                 onClose={closeAllPopups}
                 onUpdateAvatar={handleUpdateAvatar}
             />
-{/* 
+            {/* 
             <InfoTooltip
                 name="tooltip"
                 isOpen={isSignUp}
