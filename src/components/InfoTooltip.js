@@ -4,9 +4,9 @@ import tooltip_fail from '../images/union_fail.png'
 
 function InfoTooltip(props) {
 
-  const { name, isSuccess, isOpen, onClose } = props
-  const icon = isSuccess ? tooltip_ok : tooltip_fail;
-  const message = isSuccess ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте еще раз.';
+  const { name, isSignIn, isOpen, onClose } = props
+  const icon = isSignIn ? tooltip_ok : tooltip_fail;
+  const message = isSignIn ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте еще раз.';
 
   return (
     <div className={`popup popup_type_${name} ${isOpen ? 'popup_opened' : ''}`}>

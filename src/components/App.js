@@ -33,9 +33,7 @@ function App() {
     const [isInfoTooltipPopup, setIsInfoTooltipPopup] = React.useState(false);
     // Переменная состояния зарегистрированного пользователя
     const [loggedIn, setLoggedIn] = React.useState(false);
-    const [isOperationSuccess, setIsOperationSuccess] = React.useState(true);
-
-
+    const [isSignIn, setIsSignIn] = React.useState(true);
     // Переменная состояния пользователя
     const [currentUser, setCurrentUser] = React.useState(defaultCurrentUser);
 
@@ -43,7 +41,6 @@ function App() {
         api.getUserInfo()
             .then((data) => {
                 setCurrentUser(data)
-
             })
             .catch((err) => { console.log(err) })
     }, []);
@@ -76,7 +73,7 @@ function App() {
                 setCards((cards) => cards.filter((c) => c._id !== card._id))
             })
             .catch((err) => { console.log(err) })
-    }
+    };
 
 
     function handleEditAvatarClick() {
@@ -96,11 +93,10 @@ function App() {
         setIsOpenPopupName(true);
     };
 
-    const openInfoTooltipPopup = (isSuccess) => {
+    const openInfoTooltipPopup = (isSignIn) => {
         setIsInfoTooltipPopup(true);
-        setIsOperationSuccess(isSuccess)
-
-    }
+        setIsSignIn(isSignIn)
+    };
 
     const closeAllPopups = () => {
         setIsOpenPopupName(false);
@@ -283,7 +279,7 @@ function App() {
                 name="tooltip"
                 isOpen={isInfoTooltipPopup}
                 onClose={closeAllPopups}
-                isSuccess={isOperationSuccess}
+                isSignIn={isSignIn}
             />
 
             <Footer />
