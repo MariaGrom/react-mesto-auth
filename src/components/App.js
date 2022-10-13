@@ -37,22 +37,33 @@ function App() {
     // Переменная состояния пользователя
     const [currentUser, setCurrentUser] = React.useState(defaultCurrentUser);
 
+
     React.useEffect(() => {
-        api.getUserInfo()
-            .then((data) => {
-                setCurrentUser(data)
-            })
-            .catch((err) => { console.log(err) })
-    }, []);
+        if (loggedIn) {
+            api.getUserInfo()
+                .then((data) => {
+                    setCurrentUser({ ...currentUser, ...data })
+                })
+                .catch((err) => {
+                    console.log(err);
+                    openInfoTooltipPopup(false);
+                });
+        }
+    }, [loggedIn]);
 
     // Подгружаем данные пользователя и карточки с сервера в функции состояний
     React.useEffect(() => {
-        api.getAllCards()
-            .then((cards) => {
-                setCards(cards);
-            })
-            .catch((err) => { console.log(err) })
-    }, [])
+        if (loggedIn) {
+            api.getAllCards()
+                .then((cards) => {
+                    setCards(cards);
+                })
+                .catch((err) => {
+                    console.log(err);
+                    openInfoTooltipPopup(false);
+                });
+        }
+    }, [loggedIn])
 
     // Функция постановки лайков карточке
     function handleCardLike(card) {
@@ -63,7 +74,10 @@ function App() {
             .then((newCard) => {
                 setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c));
             })
-            .catch((err) => { console.log(err) })
+            .catch((err) => {
+                console.log(err);
+                openInfoTooltipPopup(false);
+            });
     }
 
     // Функция удаления карточки
@@ -72,7 +86,10 @@ function App() {
             .then((deletedCard) => {
                 setCards((cards) => cards.filter((c) => c._id !== card._id))
             })
-            .catch((err) => { console.log(err) })
+            .catch((err) => {
+                console.log(err);
+                openInfoTooltipPopup(false);
+            })
     };
 
 
@@ -85,7 +102,7 @@ function App() {
     };
 
     function handleAddPlaceClick() {
-        setIsAddPlacePopupOpen(true)
+        setIsAddPlacePopupOpen(true);
     };
 
     const onCardClick = (card) => {
@@ -95,7 +112,7 @@ function App() {
 
     const openInfoTooltipPopup = (isSignIn) => {
         setIsInfoTooltipPopup(true);
-        setIsSignIn(isSignIn)
+        setIsSignIn(isSignIn);
     };
 
     const closeAllPopups = () => {
@@ -110,20 +127,26 @@ function App() {
     function handleUpdateUser(userData) {
         api.setUserInfo(userData)
             .then((userDataServer) => {
-                setCurrentUser(userDataServer)
+                setCurrentUser({ ...currentUser, ...userDataServer })
                 closeAllPopups()
             })
-            .catch((err) => { console.log(err) })
+            .catch((err) => {
+                console.log(err);
+                openInfoTooltipPopup(false);
+            })
     };
 
     // Изменение аватара профиля
     function handleUpdateAvatar(userAvatar) {
         api.setUserAvatar(userAvatar)
             .then((userAvatarServer) => {
-                setCurrentUser(userAvatarServer)
+                setCurrentUser({ ...currentUser, ...userAvatarServer })
                 closeAllPopups()
             })
-            .catch((err) => { console.log(err) })
+            .catch((err) => {
+                console.log(err);
+                openInfoTooltipPopup(false);
+            })
     };
 
     // Добавление новой карточки
@@ -134,13 +157,13 @@ function App() {
                 closeAllPopups();
             })
             .catch((err) => {
-                console.log(err)
+                console.log(err);
+                openInfoTooltipPopup(false);
             })
 
     }
 
     // Функция получения токена
-
     function checkToken() {
         const token = localStorage.getItem('jwt');
         if (token) {
@@ -159,14 +182,17 @@ function App() {
         }
     }
 
+    React.useEffect(() => {
+        checkToken();
+    }, []);
+
     // Функция регистрация пользователя 
     function handleRegistration(registrationData) {
-        //apiAuth.register(registrationData) //раскомментировать, когда заработает ЯПрактикум
-            Promise.resolve() //Удалить, когда заработает ЯПрактикум
+        apiAuth.register(registrationData)
             .then((result) => {
                 if (result && result.data) {
                     openInfoTooltipPopup(true);
-                    history.push('/signin');
+                    history.push('/sign-in');
                 } else {
                     openInfoTooltipPopup(false);
                 }
@@ -178,8 +204,7 @@ function App() {
     }
     //Функция логина пользователя
     function handleLogin(loginData) {
-        //apiAuth.login(loginData) //раскомментировать, когда заработает ЯПрактикум
-            Promise.resolve() //Удалить, когда заработает ЯПрактикум
+        apiAuth.login(loginData)
             .then((result) => {
                 if (result && result.token) {
                     setCurrentUser({ ...currentUser, email: loginData.email })
@@ -206,10 +231,10 @@ function App() {
 
         <CurrentUserContext.Provider value={currentUser}>
 
-            <Header 
-            email={currentUser.email}
-            loggedIn={loggedIn}
-            logOut={logOut}
+            <Header
+                email={currentUser.email}
+                loggedIn={loggedIn}
+                logOut={logOut}
             />
 
             <Switch>
@@ -224,20 +249,24 @@ function App() {
                     />
                 </Route>
 
-{/* вместо Route обернуть в ProtectedRoute, когда разберусь с запросами с сервера */}
-                <Route path="/" loggedIn={loggedIn}> 
+                {/* вместо Route обернуть в ProtectedRoute, когда разберусь с запросами с сервера */}
+                <ProtectedRoute
 
-                    <Main
-                        onCardClick={onCardClick}
-                        onEditAvatar={handleEditAvatarClick}
-                        onEditProfile={handleEditProfileClick}
-                        onAddPlace={handleAddPlaceClick}
-                        onCardLike={handleCardLike}
-                        onCardDelete={handleCardDelete}
-                        cards={cards}
-                    />
 
-                </Route>
+                    path="/"
+                    onCardClick={onCardClick}
+                    onEditAvatar={handleEditAvatarClick}
+                    onEditProfile={handleEditProfileClick}
+                    onAddPlace={handleAddPlaceClick}
+                    onCardLike={handleCardLike}
+                    onCardDelete={handleCardDelete}
+                    cards={cards}
+                    component={Main}
+                    exact
+                    loggedIn={loggedIn}
+                />
+
+
             </Switch>
 
             <EditProfilePopup

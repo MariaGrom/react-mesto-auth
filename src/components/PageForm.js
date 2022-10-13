@@ -18,7 +18,6 @@ function PageForm(props) {
   function handleSubmit(e) {
     e.preventDefault()
     onSubmit({ email, password })
-    console.log ('Clik')
   }
 
   return (
