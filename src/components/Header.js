@@ -1,28 +1,24 @@
 import React from 'react';
 import logo from '../images/logo_white.png';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-function Header() {
+function Header(props) {
+  const { loggedIn, email, logOut } = props
+
+const location = useLocation();
+const linkText = (location.pathname === '/sign-in') ? 'Регистрация' : 'Войти';
+const buttonText = loggedIn ? 'Выйти' : linkText;
+const linkPath = (location.pathname === '/sign-in') ? '/sign-up' : '/sign-in';
+
   return (
     <header className="header">
       <img className="header__logo" src={logo} alt="Логотип" />
 
       <div className="header__info">
-        <p className="header__email">пример почты</p>
-        <Link to="/sign-in" className="header__link">Выйти</Link>
+        {loggedIn && <p className="header__email">{email}</p>}
+        {!loggedIn && <Link to={linkPath} className="header__link">{buttonText}</Link>}
+        {loggedIn && <button type="button" className="header__link" onClick={logOut}>{buttonText}</button>}
       </div>
-      {/* <Switch>
-        <Route path="/">
-        <p className="header_email">пример почты</p>
-          <Link to="/sign-in" className="header__link">Выйти</Link>
-        </Route>
-        <Route path="/sign-up">
-          <Link to="/sign-in">  Войти</Link>
-        </Route>
-        <Route path="/sign-in">
-          <Link path="/sign-up">Регистрация</Link>
-        </Route>
-      </Switch>  */}
     </header>
   )
 }

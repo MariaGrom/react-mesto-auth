@@ -210,7 +210,11 @@ function App() {
 
         <CurrentUserContext.Provider value={currentUser}>
 
-            <Header />
+            <Header 
+            email={currentUser.email}
+            loggedIn={loggedIn}
+            logOut={logOut}
+            />
 
             <Switch>
                 <Route path="/sign-up">
@@ -224,7 +228,8 @@ function App() {
                     />
                 </Route>
 
-                <ProtectedRoute path="/" loggedIn={loggedIn}>
+{/* вместо Route обернуть в ProtectedRoute, когда разберусь с запросами с сервера */}
+                <Route path="/" loggedIn={loggedIn}> 
 
                     <Main
                         onCardClick={onCardClick}
@@ -236,7 +241,7 @@ function App() {
                         cards={cards}
                     />
 
-                </ProtectedRoute>
+                </Route>
             </Switch>
 
             <EditProfilePopup
