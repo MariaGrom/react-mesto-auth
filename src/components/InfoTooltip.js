@@ -4,19 +4,17 @@ import tooltip_fail from '../images/union_fail.png'
 
 function InfoTooltip(props) {
 
-  const { name, isOpen, onClose } = props
+  const { name, isSuccess, isOpen, onClose } = props
+  const icon = isSuccess ? tooltip_ok : tooltip_fail;
+  const message = isSuccess ? 'Вы успешно зарегистрировались!' : 'Что-то пошло не так! Попробуйте еще раз.';
 
   return (
-    <div className={`popup popup_type_${name} popup_opened`}>
+    <div className={`popup popup_type_${name} ${isOpen ? 'popup_opened' : ''}`}>
       <div className="popup__content popup__content-tooltip">
-      <button type="button" className="popup__close-button" onClick={onClose}></button>
-{/* Если регистрация прошла успешно: 
-      <img className="popup__tooltip_ok" src={tooltip_ok}/>
-        <h2 className="popup__title">Вы успешно зарегистрировались!</h2>*/}
+        <button type="button" className="popup__close-button" onClick={onClose}></button>
 
-{/* Если регистрация была неудачная */}
-      <img className="popup__tooltip_fail" src={tooltip_fail}/>
-        <h2 className="popup__title">Что-то пошло не так! Попробуйте еще раз.</h2>
+        <img className="popup__tooltip_fail" src={icon} />
+        <h2 className="popup__title">{message}</h2>
 
       </div>
     </div>

@@ -30,9 +30,10 @@ function App() {
     // Переменная состояния карточек
     const [cards, setCards] = React.useState([]);
     // Переменная состояния попапа страницы регистрации
-    const [isSignUp, setIsSignUp] = React.useState(false);
+    const [isInfoTooltipPopup, setIsInfoTooltipPopup] = React.useState(false);
     // Переменная состояния зарегистрированного пользователя
     const [loggedIn, setLoggedIn] = React.useState(false);
+    const [isOperationSuccess, setIsOperationSuccess] = React.useState(true);
 
 
     // Переменная состояния пользователя
@@ -95,11 +96,18 @@ function App() {
         setIsOpenPopupName(true);
     };
 
+    const openInfoTooltipPopup = (isSuccess) => {
+        setIsInfoTooltipPopup(true);
+        setIsOperationSuccess(isSuccess)
+
+    }
+
     const closeAllPopups = () => {
         setIsOpenPopupName(false);
         setIsEditAvatarPopupOpen(false);
         setIsEditProfilePopupOpen(false);
         setIsAddPlacePopupOpen(false);
+        setIsInfoTooltipPopup(false);
     };
 
     // Изменение данных профиля
@@ -135,23 +143,67 @@ function App() {
 
     }
 
+    // Функция получения токена
+
+    function checkToken() {
+        const token = localStorage.getItem('jwt');
+        if (token) {
+            apiAuth.checkToken(token)
+                .then((result) => {
+                    if (result && result.data) {
+                        setLoggedIn(true);
+                        setCurrentUser({ ...currentUser, email: result.data.email });
+                        history.push('/');
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    openInfoTooltipPopup(false)
+                })
+        }
+    }
+
     // Функция регистрация пользователя 
-    function handleRegistration(password, email) {
-       // apiAuth.register(password, email) //раскомментировать, когда заработает ЯПрактикум
-        Promise.resolve() //Удалить, когда заработает ЯПрактикум
-            .then(() => {
-                history.push('/signin')
+    function handleRegistration(registrationData) {
+        //apiAuth.register(registrationData) //раскомментировать, когда заработает ЯПрактикум
+            Promise.resolve() //Удалить, когда заработает ЯПрактикум
+            .then((result) => {
+                if (result && result.data) {
+                    openInfoTooltipPopup(true);
+                    history.push('/signin');
+                } else {
+                    openInfoTooltipPopup(false);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                openInfoTooltipPopup(false);
+            })
+    }
+    //Функция логина пользователя
+    function handleLogin(loginData) {
+        //apiAuth.login(loginData) //раскомментировать, когда заработает ЯПрактикум
+            Promise.resolve() //Удалить, когда заработает ЯПрактикум
+            .then((result) => {
+                if (result && result.token) {
+                    setCurrentUser({ ...currentUser, email: loginData.email })
+                    localStorage.setItem('jwt', result.token);
+                    checkToken();
+                } else {
+                    openInfoTooltipPopup(false);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                openInfoTooltipPopup(false);
             })
     }
 
-
-    //Функция логина пользователя
-    // function handleLogIn (password, email) {
-    //.then (() => {
-    // history.push('/')
-    //})
-    //
-    //}
+    function logOut() {
+        setLoggedIn(false);
+        setCurrentUser(defaultCurrentUser);
+        localStorage.removeItem('jwt')
+    }
 
     return (
 
@@ -168,8 +220,7 @@ function App() {
                 </Route>
                 <Route path="/sign-in">
                     <Login
-                        title="Вход"
-                        textSubmit="Войти"
+                        onLogin={handleLogin}
                     />
                 </Route>
 
@@ -222,12 +273,13 @@ function App() {
                 onClose={closeAllPopups}
                 onUpdateAvatar={handleUpdateAvatar}
             />
-            {/* 
+
             <InfoTooltip
                 name="tooltip"
-                isOpen={isSignUp}
+                isOpen={isInfoTooltipPopup}
                 onClose={closeAllPopups}
-            /> */}
+                isSuccess={isOperationSuccess}
+            />
 
             <Footer />
 
