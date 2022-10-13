@@ -249,10 +249,7 @@ function App() {
                     />
                 </Route>
 
-                {/* вместо Route обернуть в ProtectedRoute, когда разберусь с запросами с сервера */}
                 <ProtectedRoute
-
-
                     path="/"
                     onCardClick={onCardClick}
                     onEditAvatar={handleEditAvatarClick}

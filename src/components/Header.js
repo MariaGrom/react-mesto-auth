@@ -16,8 +16,8 @@ const linkPath = (location.pathname === '/sign-in') ? '/sign-up' : '/sign-in';
 
       <div className="header__info">
         {loggedIn && <p className="header__email">{email}</p>}
-        {!loggedIn && <Link to={linkPath} className="header__link">{buttonText}</Link>}
-        {loggedIn && <button type="button" className="header__link" onClick={logOut}>{buttonText}</button>}
+        {!loggedIn && <Link to={linkPath} className="header__link header__button-logout">{buttonText}</Link>}
+        {loggedIn && <button className="header__link header__button-logout" onClick={logOut}>{buttonText}</button>}
       </div>
     </header>
   )

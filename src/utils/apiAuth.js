@@ -31,8 +31,7 @@ export const login = ( data ) => {
     }
     return Promise.reject(res.status);
   })
-
-  
+ 
 };
 
 // Функция запроса токена 
@@ -47,7 +46,6 @@ export const checkToken = (token) => {
   })
   .then((res) => {
     if (res.ok) {
-      console.log (res.json)
       return res.json();
       
     }

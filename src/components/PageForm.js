@@ -26,7 +26,7 @@ function PageForm(props) {
       <fieldset className="form__fields">
         <label className="email">
           <input
-            id="input-email"
+            id="email__input"
             name="email"
             type="email"
             placeholder="Email"
@@ -34,11 +34,11 @@ function PageForm(props) {
             onChange={handleChangeEmail}
             required=""
           />
-          <span className="input-email-error" />
+          <span className="popup__input-error email__input-error" />
         </label>
         <label className="password">
           <input
-            id="input-password"
+            id="password__input"
             type="password"
             name="password"
             placeholder='Пароль'
@@ -47,11 +47,11 @@ function PageForm(props) {
             minLength={8}
             maxLength={200}
           />
-          <span className="input-password-error" />
+          <span className="popup__input-error password__input-error" />
         </label>
       </fieldset>
 
-      <div className="">
+      <div className="form__submit">
         <button type="submit" className="form__submit-button">{buttonText}</button>
         {isRegister && <span className="form__subtitle">Уже зарегистрированы? <Link to="/sign-in" className="form__link">Войти</Link></span>}
         {!isRegister && <span className="form__subtitle">Еще нет аккаунта? <Link to="/sign-up" className="form__link">Зарегистрироваться</Link></span>}
