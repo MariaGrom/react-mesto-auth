@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import Main from './Main';
@@ -21,22 +21,21 @@ function App() {
     const history = useHistory();
 
     // Переменные состояния попапов главной страницы
-    const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-    const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-    const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+    const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+    const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+    const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
     // Переменные состояния для попапа открытия карточки 
-    const [selectedCard, setSelectedCard] = React.useState({});
-    const [isOpenPopupName, setIsOpenPopupName] = React.useState(false);
+    const [selectedCard, setSelectedCard] = useState({});
+    const [isOpenPopupName, setIsOpenPopupName] = useState(false);
     // Переменная состояния карточек
-    const [cards, setCards] = React.useState([]);
+    const [cards, setCards] = useState([]);
     // Переменная состояния попапа страницы регистрации
-    const [isInfoTooltipPopup, setIsInfoTooltipPopup] = React.useState(false);
+    const [isInfoTooltipPopup, setIsInfoTooltipPopup] = useState(false);
     // Переменная состояния зарегистрированного пользователя
-    const [loggedIn, setLoggedIn] = React.useState(false);
-    const [isSignIn, setIsSignIn] = React.useState(true);
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [isSignIn, setIsSignIn] = useState(true);
     // Переменная состояния пользователя
-    const [currentUser, setCurrentUser] = React.useState(defaultCurrentUser);
-
+    const [currentUser, setCurrentUser] = useState(defaultCurrentUser);
 
     React.useEffect(() => {
         if (loggedIn) {
@@ -63,7 +62,7 @@ function App() {
                     openInfoTooltipPopup(false);
                 });
         }
-    }, [loggedIn])
+    }, [loggedIn]);
 
     // Функция постановки лайков карточке
     function handleCardLike(card) {
@@ -78,7 +77,7 @@ function App() {
                 console.log(err);
                 openInfoTooltipPopup(false);
             });
-    }
+    };
 
     // Функция удаления карточки
     function handleCardDelete(card) {
@@ -91,7 +90,6 @@ function App() {
                 openInfoTooltipPopup(false);
             })
     };
-
 
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true)
@@ -160,8 +158,7 @@ function App() {
                 console.log(err);
                 openInfoTooltipPopup(false);
             })
-
-    }
+    };
 
     // Функция получения токена
     function checkToken() {
@@ -180,7 +177,7 @@ function App() {
                     openInfoTooltipPopup(false)
                 })
         }
-    }
+    };
 
     React.useEffect(() => {
         checkToken();
@@ -201,7 +198,8 @@ function App() {
                 console.log(err);
                 openInfoTooltipPopup(false);
             })
-    }
+    };
+
     //Функция логина пользователя
     function handleLogin(loginData) {
         apiAuth.login(loginData)
@@ -218,16 +216,15 @@ function App() {
                 console.log(err);
                 openInfoTooltipPopup(false);
             })
-    }
+    };
 
     function logOut() {
         setLoggedIn(false);
         setCurrentUser(defaultCurrentUser);
         localStorage.removeItem('jwt')
-    }
+    };
 
     return (
-
 
         <CurrentUserContext.Provider value={currentUser}>
 
@@ -263,7 +260,6 @@ function App() {
                     loggedIn={loggedIn}
                 />
 
-
             </Switch>
 
             <EditProfilePopup
@@ -271,7 +267,6 @@ function App() {
                 onClose={closeAllPopups}
                 onUpdateUser={handleUpdateUser}
             />
-
 
             <AddPlacePopup
                 isOpen={isAddPlacePopupOpen}
@@ -312,7 +307,7 @@ function App() {
 
         </CurrentUserContext.Provider>
 
-    );
-}
+    )
+};
 
 export default App;

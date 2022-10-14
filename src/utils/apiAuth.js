@@ -1,6 +1,13 @@
 export const BASE_URL = ' https://auth.nomoreparties.co';
 
-export const register = ( data ) => {
+function handleResponce(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(res.status);
+};
+
+export const register = (data) => {
   return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
@@ -8,16 +15,10 @@ export const register = ( data ) => {
     },
     body: JSON.stringify(data)
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(res.status);
-  })
-
+    .then(handleResponce)
 };
 
-export const login = ( data ) => {
+export const login = (data) => {
   return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
@@ -25,17 +26,10 @@ export const login = ( data ) => {
     },
     body: JSON.stringify(data)
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(res.status);
-  })
- 
+    .then(handleResponce)
 };
 
 // Функция запроса токена 
-
 export const checkToken = (token) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
@@ -44,11 +38,5 @@ export const checkToken = (token) => {
       'Authorization': `Bearer ${token}`,
     }
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-      
-    }
-    return Promise.reject(res.status);
-  })
+    .then(handleResponce)
 }
