@@ -3,7 +3,7 @@
 Mesto.React - приложение проекта "Mesto", написанного на **React**.
 
 ### Ссылка
-https://mariagrom.github.io/mesto-react/
+https://mariagrom.github.io/react-mesto-auth/
 
 ### Функционал
 Одностраничный сайт аналогичный соц.сети Instagram, с загрузкой данных о пользователе и фотокарточек с сервера с помощью API, с возможностью:
